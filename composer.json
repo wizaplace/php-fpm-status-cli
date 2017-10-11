@@ -1,6 +1,7 @@
 {
     "name": "wizaplace/php-fpm-status-cli",
     "description": "PHP-FPM status-page CLI",
+    "license": "MIT",
     "require": {
         "mnapoli/silly": "^1.6",
         "hoa/fastcgi": "~3.0",
