@@ -4,7 +4,7 @@ Simple CLI to access PHP-FPM status page when the HTTP server is not configured 
 
 ## Usage
 
-```shell
+```
 $ php-fpm-status -h
 Usage:
   php-fpm-status [options]
