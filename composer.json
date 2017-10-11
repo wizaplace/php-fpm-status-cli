@@ -1,0 +1,12 @@
+{
+    "name": "wizaplace/php-fpm-status-cli",
+    "description": "PHP-FPM status-page CLI",
+    "require": {
+        "mnapoli/silly": "^1.6",
+        "hoa/fastcgi": "~3.0",
+        "hoa/socket": "~1.0"
+    },
+    "bin": [
+        "php-fpm-status"
+    ]
+}
