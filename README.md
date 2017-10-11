@@ -2,6 +2,12 @@
 
 Simple CLI to access PHP-FPM status page when the HTTP server is not configured to do so.
 
+## Install
+
+```
+$ composer require wizaplace/php-fpm-status-cli
+```
+
 ## Usage
 
 ```
