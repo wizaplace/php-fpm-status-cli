@@ -1,0 +1,13 @@
+jobs:
+  build:
+    docker:
+     - image: composer
+     - image: php:7-fpm
+       command: [sh, -c, echo "pm.status_path=/status" >> /usr/local/etc/php-fpm.d/www.conf && php-fpm]
+
+    working_directory: /app
+
+    steps:
+      - checkout
+      - run: composer install --no-progress
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --full

@@ -2,6 +2,8 @@
 
 Simple CLI to access PHP-FPM status page when the HTTP server is not configured to do so.
 
+[![CircleCI](https://circleci.com/gh/wizaplace/php-fpm-status-cli.svg?style=svg)](https://circleci.com/gh/wizaplace/php-fpm-status-cli)
+
 ## Install
 
 ```
