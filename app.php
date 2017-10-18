@@ -29,6 +29,12 @@ $app->command('run [--socket=] [--path=] [--full] [--format=]', function (Output
         'QUERY_STRING' => implode('&', $query),
     ]);
 
+    if (strpos($response, 'process manager') === false && strpos($response, 'process-manager') === false) {
+        $output->writeln('<error>PHP-FPM gave the following error: '.trim($response).'</error>');
+
+        return 1;
+    }
+
     $output->write($response, false, OutputInterface::OUTPUT_RAW);
 })->defaults([
     'socket' => 'unix:///run/php/php7.1-fpm.sock',

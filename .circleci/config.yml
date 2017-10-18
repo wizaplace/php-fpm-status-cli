@@ -10,4 +10,11 @@ jobs:
     steps:
       - checkout
       - run: composer install --no-progress
+      - run: php php-fpm-status --socket=tcp://localhost:9000
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --format=json
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --format=xml
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --format=html
       - run: php php-fpm-status --socket=tcp://localhost:9000 --full
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --format=json --full
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --format=xml --full
+      - run: php php-fpm-status --socket=tcp://localhost:9000 --format=html --full
