@@ -37,3 +37,25 @@ Help:
 The `socket` can be `unix:///path/to/socket` for a UNIX socket or `tcp://127.0.0.1:9000` for a TCP address.
 
 The `path` is the `pm.status_path` configuration option in the main FPM config or in the pool.
+
+## Output
+
+```shell
+$ php-fpm-status
+pool:                 www
+process manager:      dynamic
+start time:           18/Oct/2017:13:48:20 +0000
+start since:          6
+accepted conn:        1
+listen queue:         0
+max listen queue:     0
+listen queue len:     128
+idle processes:       1
+active processes:     1
+total processes:      2
+max active processes: 1
+max children reached: 0
+slow requests:        0
+```
+
+Use the `--full` option to retrieve more information.
