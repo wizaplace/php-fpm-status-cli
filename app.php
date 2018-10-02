@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Exception;
 
 $app = new Silly\Application();
 $app->command('run [--socket=] [--path=] [--full] [--format=]', function (OutputInterface $output, $socket, $path, $full, $format) {
@@ -22,12 +23,18 @@ $app->command('run [--socket=] [--path=] [--full] [--format=]', function (Output
         new Hoa\Socket\Client($socket)
     );
 
-    $response = $fastcgi->send([
-        'REQUEST_METHOD'  => 'GET',
-        'SCRIPT_NAME' => $path,
-        'SCRIPT_FILENAME' => $path,
-        'QUERY_STRING' => implode('&', $query),
-    ]);
+    try {
+        $response = $fastcgi->send([
+            'REQUEST_METHOD'  => 'GET',
+            'SCRIPT_NAME' => $path,
+            'SCRIPT_FILENAME' => $path,
+            'QUERY_STRING' => implode('&', $query),
+        ]);
+    } catch (Exception $e) {
+        $output->writeln('<error>Tried sending to PHP-FPM but got the following error: ' . $e->getMessage());
+
+        return 1;
+    }
 
     if (strpos($response, 'process manager') === false && strpos($response, 'process-manager') === false) {
         $output->writeln('<error>PHP-FPM gave the following error: '.trim($response).'</error>');
