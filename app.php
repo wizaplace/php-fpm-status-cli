@@ -4,7 +4,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Exception;
 
 $app = new Silly\Application();
-$app->command('run [--socket=] [--path=] [--full] [--format=]', function (OutputInterface $output, $socket, $path, $full, $format) {
+$app->command('run [--socket=] [--path=] [--full] [--format=] [-i|--header]', function (OutputInterface $output, $socket, $path, $full, $format, $header) {
     $query = [];
 
     if ($full) {
@@ -23,6 +23,8 @@ $app->command('run [--socket=] [--path=] [--full] [--format=]', function (Output
         new Hoa\Socket\Client($socket)
     );
 
+    $stderr = $output->getErrorOutput();
+
     try {
         $response = $fastcgi->send([
             'REQUEST_METHOD'  => 'GET',
@@ -31,13 +33,19 @@ $app->command('run [--socket=] [--path=] [--full] [--format=]', function (Output
             'QUERY_STRING' => implode('&', $query),
         ]);
     } catch (Exception $e) {
-        $output->writeln('<error>Tried sending to PHP-FPM but got the following error: ' . $e->getMessage());
+        $stderr->writeln('<error>Tried sending to PHP-FPM but got the following error: ' . $e->getMessage());
 
         return 1;
     }
 
-    if (strpos($response, 'process manager') === false && strpos($response, 'process-manager') === false) {
-        $output->writeln('<error>PHP-FPM gave the following error: '.trim($response).'</error>');
+    $headers = $fastcgi->getResponseHeaders();
+
+    if ($header) {
+        $output->writeln(formatHeaders($headers)."\n");
+    }
+
+    if (isset($headers['status'])) {
+        $stderr->writeln('<error>PHP-FPM returns status: '.$headers['status'].'</error>');
 
         return 1;
     }
@@ -51,7 +59,15 @@ $app->command('run [--socket=] [--path=] [--full] [--format=]', function (Output
     '--path' => 'The URI to view the FPM status page. If this value is not set, no URI will be recognized as a status page.',
     '--full' => 'Show full server status',
     '--format' => 'Output format for the status, txt by default, [html, json, xml] available',
+    '--header' => 'Output fastcgi headers',
 ]);
 $app->setDefaultCommand('run');
 
 return $app;
+
+function formatHeaders($headers)
+{
+    return implode("\n", array_map(function ($key, $value) {
+        return "{$key}: {$value}";
+    }, array_keys($headers), array_values($headers)));
+}
