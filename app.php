@@ -1,7 +1,6 @@
 <?php
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Exception;
 
 $app = new Silly\Application();
 $app->command('run [--socket=] [--path=] [--full] [--format=] [-i|--header]', function (OutputInterface $output, $socket, $path, $full, $format, $header) {
@@ -32,7 +31,7 @@ $app->command('run [--socket=] [--path=] [--full] [--format=] [-i|--header]', fu
             'SCRIPT_FILENAME' => $path,
             'QUERY_STRING' => implode('&', $query),
         ]);
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         $stderr->writeln('<error>Tried sending to PHP-FPM but got the following error: ' . $e->getMessage());
 
         return 1;
