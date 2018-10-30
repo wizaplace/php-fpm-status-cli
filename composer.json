@@ -4,7 +4,7 @@
     "license": "MIT",
     "require": {
         "mnapoli/silly": "^1.6",
-        "hoa/fastcgi": "~3.0",
+        "hoa/fastcgi": "@dev",
         "hoa/socket": "~1.0"
     },
     "bin": [
